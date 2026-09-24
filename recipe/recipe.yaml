@@ -69,6 +69,7 @@ outputs:
               then: lib/libiio.${{ lib_major_version }}*.dylib
             - if: win
               then: Library/bin/libiio.dll
+      - downstream: libm2k
 
   - package:
       name: libiio-devel
@@ -143,6 +144,7 @@ outputs:
           python_version:
             - ${{ python_min }}.*
             - "*"
+      - downstream: pyadi-iio
 
   - package:
       name: libiio
