@@ -16,11 +16,16 @@ cmake_config_args=(
     -DVERSION=$PKG_VERSION
 )
 
-if [[ $target_platform == osx* ]] ; then
+if [[ $build_platform == osx* ]] ; then
     # set CMAKE_SYSTEM_NAME so CMAKE_CROSSCOMPILING is true to short-circuit
     # broken installed library detection
     cmake_config_args+=(
         -DCMAKE_SYSTEM_NAME="Darwin"
+    )
+elif [[ $build_platform != $target_platform ]] ; then
+    # similar to above but when we're actually cross-compiling
+    cmake_config_args+=(
+        -DCMAKE_SYSTEM_NAME="Linux"
     )
 fi
 
