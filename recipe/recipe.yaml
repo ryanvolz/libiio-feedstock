@@ -135,7 +135,7 @@ outputs:
         # need libiio-devel dependency because Python bindings search
         # for the library using the unversioned name
         - libiio-devel ${{ version }}.*
-        - python >=${{ python_min }}
+        - python >=3.10
     tests:
       - python:
           imports:
