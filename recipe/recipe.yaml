@@ -1,9 +1,9 @@
 schema_version: 1
 
 context:
-  version: "1.0.0"
+  version: "0.26"
   lib_major_version: "${{ (version | split('.'))[0] }}"
-  build: 0
+  build: 3
 
 recipe:
   name: libiio-split
@@ -11,11 +11,7 @@ recipe:
 
 source:
   url: https://github.com/analogdevicesinc/libiio/archive/v${{ version }}.tar.gz
-  sha256: b4289bf9971f4a193c8c5f7fb40fbd4bd3f33654936b960b9539c7f2b484e44a
-  patches:
-    - 0001-python-Fall-back-to-searching-for-ucrtbase-if-c-fail.patch
-    - 0002-cmake-Use-same-naming-rules-for-iio-compat-as-v0-lib.patch
-    - 0003-cmake-Make-iio-compat-define-LIBIIO1_NAME-to-exact-t.patch
+  sha256: fb445fb860ef1248759f45d4273a4eff360534480ec87af64c6b8db3b99be7e5
 
 build:
   number: ${{ build }}
@@ -42,7 +38,7 @@ outputs:
         - zstd
 
   - package:
-      name: libiio${{ lib_major_version }}
+      name: libiio-c
     inherit:
       from: libiio-build
       run_exports: false
@@ -54,7 +50,7 @@ outputs:
           - if: osx
             then: lib/libiio.${{ lib_major_version }}*.dylib
           - if: win
-            then: Library/bin/libiio${{ lib_major_version }}.dll
+            then: Library/bin/libiio.dll
     requirements:
       build:
         - ${{ compiler("c") }}
@@ -72,43 +68,7 @@ outputs:
             - if: osx
               then: lib/libiio.${{ lib_major_version }}*.dylib
             - if: win
-              then: Library/bin/libiio${{ lib_major_version }}.dll
-
-  - package:
-      # named as such for compatibility with the v0 package,
-      # containing only compat lib and not -dev things like it used to
-      name: libiio-c
-      # version needs to start with 0 to satisfy existing dependencies
-      version: "0.99.${{ version }}"
-    inherit:
-      from: libiio-build
-      run_exports: false
-    build:
-      files:
-        include:
-          - if: linux
-            then: lib/libiio.so.0*
-          - if: osx
-            then: lib/libiio.0*.dylib
-          - if: win
-            then: Library/bin/libiio.dll
-    requirements:
-      build:
-        - ${{ compiler("c") }}
-        - ${{ stdlib("c") }}
-      run:
-        - ${{ pin_subpackage("libiio" + lib_major_version, exact=True) }}
-    tests:
-      - package_contents:
-          strict: true
-          files:
-            - if: linux
-              then: lib/libiio.so.0*
-            - if: osx
-              then: lib/libiio.0*.dylib
-            - if: win
               then: Library/bin/libiio.dll
-      - downstream: libm2k
 
   - package:
       name: libiio-dev
@@ -132,24 +92,20 @@ outputs:
         - ${{ compiler("c") }}
         - ${{ stdlib("c") }}
       run:
-        - ${{ pin_subpackage("libiio" + lib_major_version, exact=True) }}
+        - ${{ pin_subpackage("libiio-c", exact=True) }}
       run_exports:
-        - ${{ pin_subpackage("libiio" + lib_major_version, upper_bound=None) }}
+        - ${{ pin_subpackage("libiio-c", upper_bound=None) }}
     tests:
       - package_contents:
           strict: true
           include:
-            - iio/iio.h
-            - iio/iio-backend.h
-            - iio/iio-debug.h
-            - iio/iio-lock.h
-            - iio/iiod-client.h
+            - iio.h
           lib:
             - if: unix
               then: iio
           files:
             - if: win
-              then: Library/lib/libiio${{ lib_major_version }}.lib
+              then: Library/lib/libiio.lib
             - ${{ "Library/" if win }}lib/pkgconfig/libiio.pc
 
   - package:
@@ -157,21 +113,24 @@ outputs:
     build:
       string: py_${{ build }}
       noarch: python
-      script: python -m pip install -vv bindings/python
+      script:
+        file: ${{ "build_pylibiio.sh" if not win else "build_pylibiio.bat" }}
     requirements:
       build:
+        - cmake
+        - ninja
         # cross-compilation dependencies
         - if: build_platform != target_platform
           then: python ${{ python_min }}.*
         - if: build_platform != target_platform
           then: cross-python_${{ target_platform }}
       host:
-        - ${{ pin_subpackage("libiio-dev", exact=True) }}
+        - ${{ pin_subpackage("libiio-dev", upper_bound="x") }}
         - pip
         - python ${{ python_min }}.*
         - setuptools
       run:
-        - libiio${{ lib_major_version }} ${{ version }}.*
+        - libiio-c ${{ version }}.*
         # need libiio-dev dependency because Python bindings search
         # for the library using the unversioned name
         - libiio-dev ${{ version }}.*
@@ -206,32 +165,31 @@ outputs:
       host:
         - if: linux
           then: libaio
-        - ${{ pin_subpackage("libiio" + lib_major_version, exact=True) }}
+        - ${{ pin_subpackage("libiio-c", exact=True) }}
         # only iiod (Linux-only) ends up linking against zstd
         - if: linux
           then: zstd
       run:
-        - ${{ pin_subpackage("libiio" + lib_major_version, exact=True) }}
+        - ${{ pin_subpackage("libiio-c", exact=True) }}
         # recipes still use this output as a host dependency, so depend on dev
         - ${{ pin_subpackage("libiio-dev", exact=True) }}
         - ${{ pin_subpackage("pylibiio", exact=True) }}
       run_exports:
-        - ${{ pin_subpackage("libiio" + lib_major_version, upper_bound=None) }}
+        - ${{ pin_subpackage("libiio-c", upper_bound="x") }}
     tests:
       - package_contents:
           strict: true
           bin:
             - iio_attr
-            - iio_event
             - iio_genxml
             - iio_info
-            - iio_ping
+            - iio_readdev
             - iio_reg
-            - iio_rwdev
             - if: unix
               then: iio_stresstest
             - if: linux
               then: iiod
+            - iio_writedev
           files:
             - if: linux
               then: bin/.libiio-post-link.sh
@@ -246,24 +204,21 @@ outputs:
             - "*"
       - script:
           - iio_attr --help
-          - iio_event --help
           - iio_genxml --help
           - iio_info --help
-          - iio_ping --help
+          - iio_readdev --help
           - iio_reg --help
-          - iio_rwdev --help
           - if: unix
             then: iio_stresstest --help
           - if: linux
             then: iiod --help
+          - iio_writedev --help
 
 about:
   license: LGPL-2.1-or-later AND GPL-3.0-or-later
   license_file:
     - COPYING.txt
     - COPYING_GPL.txt
-    - if: linux
-      then: deps/libini/LICENSE.txt
     - if: win
       then: deps/mdns/LICENSE
     - if: win
@@ -283,8 +238,7 @@ about:
 
     Packages include:
 
-      - `libiio${{ lib_major_version }}` contains the library
-      - `libiio-c` contains the library shim for v0 compatibility
+      - `libiio-c` contains the library
       - `libiio-dev` contains the development files for compiling against libiio
       - `pylibiio` contains the Python bindings for libiio
       - `libiio` contains command line tools and depends on all of the above
