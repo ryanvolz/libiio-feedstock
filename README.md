@@ -20,8 +20,7 @@ Documentation: https://analogdevicesinc.github.io/libiio/
 libiio is used to interface to the Linux Industrial Input/Output (IIO) Subsystem. The Linux IIO subsystem is intended to provide support for devices that in some sense are analog to digital or digital to analog converters (ADCs, DACs). This includes, but is not limited to ADCs, Accelerometers, Gyros, IMUs, Capacitance to Digital Converters (CDCs), Pressure Sensors, Color, Light and Proximity Sensors, Temperature Sensors, Magnetometers, DACs, DDS (Direct Digital Synthesis), PLLs (Phase Locked Loops), Variable/Programmable Gain Amplifiers (VGA, PGA), and RF transceivers. You can use libiio natively on an embedded Linux target (local mode), or use libiio to communicate remotely to that same target from a host Linux, Windows or MAC over USB or Ethernet or Serial.
 Packages include:
 
-  - `libiio1` contains the library
-  - `libiio-c` contains the library shim for v0 compatibility
+  - `libiio-c` contains the library
   - `libiio-dev` contains the development files for compiling against libiio
   - `pylibiio` contains the Python bindings for libiio
   - `libiio` contains command line tools and depends on all of the above
@@ -54,8 +53,7 @@ Documentation: https://analogdevicesinc.github.io/libiio/
 libiio is used to interface to the Linux Industrial Input/Output (IIO) Subsystem. The Linux IIO subsystem is intended to provide support for devices that in some sense are analog to digital or digital to analog converters (ADCs, DACs). This includes, but is not limited to ADCs, Accelerometers, Gyros, IMUs, Capacitance to Digital Converters (CDCs), Pressure Sensors, Color, Light and Proximity Sensors, Temperature Sensors, Magnetometers, DACs, DDS (Direct Digital Synthesis), PLLs (Phase Locked Loops), Variable/Programmable Gain Amplifiers (VGA, PGA), and RF transceivers. You can use libiio natively on an embedded Linux target (local mode), or use libiio to communicate remotely to that same target from a host Linux, Windows or MAC over USB or Ethernet or Serial.
 Packages include:
 
-  - `libiio1` contains the library
-  - `libiio-c` contains the library shim for v0 compatibility
+  - `libiio-c` contains the library
   - `libiio-dev` contains the development files for compiling against libiio
   - `pylibiio` contains the Python bindings for libiio
   - `libiio` contains command line tools and depends on all of the above
@@ -88,8 +86,7 @@ Documentation: https://analogdevicesinc.github.io/libiio/
 libiio is used to interface to the Linux Industrial Input/Output (IIO) Subsystem. The Linux IIO subsystem is intended to provide support for devices that in some sense are analog to digital or digital to analog converters (ADCs, DACs). This includes, but is not limited to ADCs, Accelerometers, Gyros, IMUs, Capacitance to Digital Converters (CDCs), Pressure Sensors, Color, Light and Proximity Sensors, Temperature Sensors, Magnetometers, DACs, DDS (Direct Digital Synthesis), PLLs (Phase Locked Loops), Variable/Programmable Gain Amplifiers (VGA, PGA), and RF transceivers. You can use libiio natively on an embedded Linux target (local mode), or use libiio to communicate remotely to that same target from a host Linux, Windows or MAC over USB or Ethernet or Serial.
 Packages include:
 
-  - `libiio1` contains the library
-  - `libiio-c` contains the library shim for v0 compatibility
+  - `libiio-c` contains the library
   - `libiio-dev` contains the development files for compiling against libiio
   - `pylibiio` contains the Python bindings for libiio
   - `libiio` contains command line tools and depends on all of the above
@@ -122,76 +119,7 @@ Documentation: https://analogdevicesinc.github.io/libiio/
 libiio is used to interface to the Linux Industrial Input/Output (IIO) Subsystem. The Linux IIO subsystem is intended to provide support for devices that in some sense are analog to digital or digital to analog converters (ADCs, DACs). This includes, but is not limited to ADCs, Accelerometers, Gyros, IMUs, Capacitance to Digital Converters (CDCs), Pressure Sensors, Color, Light and Proximity Sensors, Temperature Sensors, Magnetometers, DACs, DDS (Direct Digital Synthesis), PLLs (Phase Locked Loops), Variable/Programmable Gain Amplifiers (VGA, PGA), and RF transceivers. You can use libiio natively on an embedded Linux target (local mode), or use libiio to communicate remotely to that same target from a host Linux, Windows or MAC over USB or Ethernet or Serial.
 Packages include:
 
-  - `libiio1` contains the library
-  - `libiio-c` contains the library shim for v0 compatibility
-  - `libiio-dev` contains the development files for compiling against libiio
-  - `pylibiio` contains the Python bindings for libiio
-  - `libiio` contains command line tools and depends on all of the above
-
-For Linux users of `libiio`, you will likely want to link the provided udev rule into your system installation in order for the hardware to have the correct permissions:
-
-    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/90-libiio.rules /etc/udev/rules.d/
-    sudo udevadm control --reload
-    sudo udevadm trigger
-
-Then, make sure your user account belongs to the plugdev group in order to be able to access your device:
-
-    sudo usermod -a -G plugdev <user>
-
-You may have to restart for this change to take effect.
-
-About libiio1
--------------
-
-Home: https://github.com/analogdevicesinc/libiio
-
-Package license: LGPL-2.1-or-later AND GPL-3.0-or-later
-
-Summary: Library for interfacing with Linux IIO devices
-
-Development: https://github.com/analogdevicesinc/libiio
-
-Documentation: https://analogdevicesinc.github.io/libiio/
-
-libiio is used to interface to the Linux Industrial Input/Output (IIO) Subsystem. The Linux IIO subsystem is intended to provide support for devices that in some sense are analog to digital or digital to analog converters (ADCs, DACs). This includes, but is not limited to ADCs, Accelerometers, Gyros, IMUs, Capacitance to Digital Converters (CDCs), Pressure Sensors, Color, Light and Proximity Sensors, Temperature Sensors, Magnetometers, DACs, DDS (Direct Digital Synthesis), PLLs (Phase Locked Loops), Variable/Programmable Gain Amplifiers (VGA, PGA), and RF transceivers. You can use libiio natively on an embedded Linux target (local mode), or use libiio to communicate remotely to that same target from a host Linux, Windows or MAC over USB or Ethernet or Serial.
-Packages include:
-
-  - `libiio1` contains the library
-  - `libiio-c` contains the library shim for v0 compatibility
-  - `libiio-dev` contains the development files for compiling against libiio
-  - `pylibiio` contains the Python bindings for libiio
-  - `libiio` contains command line tools and depends on all of the above
-
-For Linux users of `libiio`, you will likely want to link the provided udev rule into your system installation in order for the hardware to have the correct permissions:
-
-    sudo ln -s $CONDA_PREFIX/lib/udev/rules.d/90-libiio.rules /etc/udev/rules.d/
-    sudo udevadm control --reload
-    sudo udevadm trigger
-
-Then, make sure your user account belongs to the plugdev group in order to be able to access your device:
-
-    sudo usermod -a -G plugdev <user>
-
-You may have to restart for this change to take effect.
-
-About pylibiio
---------------
-
-Home: https://github.com/analogdevicesinc/libiio
-
-Package license: LGPL-2.1-or-later AND GPL-3.0-or-later
-
-Summary: Library for interfacing with Linux IIO devices
-
-Development: https://github.com/analogdevicesinc/libiio
-
-Documentation: https://analogdevicesinc.github.io/libiio/
-
-libiio is used to interface to the Linux Industrial Input/Output (IIO) Subsystem. The Linux IIO subsystem is intended to provide support for devices that in some sense are analog to digital or digital to analog converters (ADCs, DACs). This includes, but is not limited to ADCs, Accelerometers, Gyros, IMUs, Capacitance to Digital Converters (CDCs), Pressure Sensors, Color, Light and Proximity Sensors, Temperature Sensors, Magnetometers, DACs, DDS (Direct Digital Synthesis), PLLs (Phase Locked Loops), Variable/Programmable Gain Amplifiers (VGA, PGA), and RF transceivers. You can use libiio natively on an embedded Linux target (local mode), or use libiio to communicate remotely to that same target from a host Linux, Windows or MAC over USB or Ethernet or Serial.
-Packages include:
-
-  - `libiio1` contains the library
-  - `libiio-c` contains the library shim for v0 compatibility
+  - `libiio-c` contains the library
   - `libiio-dev` contains the development files for compiling against libiio
   - `pylibiio` contains the Python bindings for libiio
   - `libiio` contains command line tools and depends on all of the above
@@ -262,7 +190,6 @@ Current release info
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libiio-green.svg)](https://anaconda.org/conda-forge/libiio) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libiio.svg)](https://anaconda.org/conda-forge/libiio) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libiio.svg)](https://anaconda.org/conda-forge/libiio) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libiio.svg)](https://anaconda.org/conda-forge/libiio) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libiio--c-green.svg)](https://anaconda.org/conda-forge/libiio-c) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libiio-c.svg)](https://anaconda.org/conda-forge/libiio-c) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libiio-c.svg)](https://anaconda.org/conda-forge/libiio-c) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libiio-c.svg)](https://anaconda.org/conda-forge/libiio-c) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libiio--dev-green.svg)](https://anaconda.org/conda-forge/libiio-dev) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libiio-dev.svg)](https://anaconda.org/conda-forge/libiio-dev) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libiio-dev.svg)](https://anaconda.org/conda-forge/libiio-dev) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libiio-dev.svg)](https://anaconda.org/conda-forge/libiio-dev) |
-| [![Conda Recipe](https://img.shields.io/badge/recipe-libiio1-green.svg)](https://anaconda.org/conda-forge/libiio1) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libiio1.svg)](https://anaconda.org/conda-forge/libiio1) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libiio1.svg)](https://anaconda.org/conda-forge/libiio1) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libiio1.svg)](https://anaconda.org/conda-forge/libiio1) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-pylibiio-green.svg)](https://anaconda.org/conda-forge/pylibiio) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/pylibiio.svg)](https://anaconda.org/conda-forge/pylibiio) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/pylibiio.svg)](https://anaconda.org/conda-forge/pylibiio) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/pylibiio.svg)](https://anaconda.org/conda-forge/pylibiio) |
 
 Installing libiio
@@ -282,7 +209,7 @@ How to use
 <summary>With conda</summary>
 
 ```
-conda install libiio libiio-c libiio-dev libiio1 pylibiio
+conda install libiio libiio-c libiio-dev pylibiio
 ```
 
 </details>
@@ -291,7 +218,7 @@ conda install libiio libiio-c libiio-dev libiio1 pylibiio
 <summary>With mamba</summary>
 
 ```
-mamba install libiio libiio-c libiio-dev libiio1 pylibiio
+mamba install libiio libiio-c libiio-dev pylibiio
 ```
 
 </details>
@@ -301,9 +228,9 @@ mamba install libiio libiio-c libiio-dev libiio1 pylibiio
 
 ```
 # for adding to your local project
-pixi add libiio libiio-c libiio-dev libiio1 pylibiio
+pixi add libiio libiio-c libiio-dev pylibiio
 # for installing globally
-pixi global install libiio libiio-c libiio-dev libiio1 pylibiio
+pixi global install libiio libiio-c libiio-dev pylibiio
 ```
 
 </details>
