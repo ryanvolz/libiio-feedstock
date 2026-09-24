@@ -71,7 +71,7 @@ outputs:
               then: Library/bin/libiio.dll
 
   - package:
-      name: libiio-dev
+      name: libiio-devel
     inherit:
       from: libiio-build
       run_exports: false
@@ -94,7 +94,7 @@ outputs:
       run:
         - ${{ pin_subpackage("libiio-c", exact=True) }}
       run_exports:
-        - ${{ pin_subpackage("libiio-c", upper_bound=None) }}
+        - ${{ pin_subpackage("libiio-c", upper_bound="x") }}
     tests:
       - package_contents:
           strict: true
@@ -125,15 +125,15 @@ outputs:
         - if: build_platform != target_platform
           then: cross-python_${{ target_platform }}
       host:
-        - ${{ pin_subpackage("libiio-dev", upper_bound="x") }}
+        - ${{ pin_subpackage("libiio-devel", exact=True) }}
         - pip
         - python ${{ python_min }}.*
         - setuptools
       run:
         - libiio-c ${{ version }}.*
-        # need libiio-dev dependency because Python bindings search
+        # need libiio-devel dependency because Python bindings search
         # for the library using the unversioned name
-        - libiio-dev ${{ version }}.*
+        - libiio-devel ${{ version }}.*
         - python >=${{ python_min }}
     tests:
       - python:
@@ -172,7 +172,7 @@ outputs:
       run:
         - ${{ pin_subpackage("libiio-c", exact=True) }}
         # recipes still use this output as a host dependency, so depend on dev
-        - ${{ pin_subpackage("libiio-dev", exact=True) }}
+        - ${{ pin_subpackage("libiio-devel", exact=True) }}
         - ${{ pin_subpackage("pylibiio", exact=True) }}
       run_exports:
         - ${{ pin_subpackage("libiio-c", upper_bound="x") }}
@@ -239,7 +239,7 @@ about:
     Packages include:
 
       - `libiio-c` contains the library
-      - `libiio-dev` contains the development files for compiling against libiio
+      - `libiio-devel` contains the development files for compiling against libiio
       - `pylibiio` contains the Python bindings for libiio
       - `libiio` contains command line tools and depends on all of the above
 
